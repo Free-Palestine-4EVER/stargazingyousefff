@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yousef Stargazing — Wadi Rum Desert Sky Experience</title>
+    <meta name="description" content="Experience the ancient Bedouin art of stargazing in Wadi Rum, Jordan. Guided by Yousef, a Bedouin desert guide who reads the sky like a book.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #D4A843;
+            --gold-light: #E8C97A;
+            --gold-dark: #B8912E;
+            --night: #0A0E1A;
+            --night-light: #111827;
+            --night-mid: #1a2235;
+            --cream: #F5F0E8;
+            --sand: #C4A882;
+            --star-white: #FFFDF5;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--night);
+            color: var(--cream);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* STICKY BOOK NOW                         */
+        /* ═══════════════════════════════════════ */
+        .sticky-book {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 99;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--night);
+            padding: 0.6rem 0.9rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            border-radius: 10px 0 0 10px;
+            box-shadow: -4px 0 20px rgba(212,168,67,0.3);
+            transition: all 0.3s;
+        }
+        .sticky-book:hover {
+            padding-left: 1.5rem;
+            box-shadow: -8px 0 30px rgba(212,168,67,0.5);
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* FLOATING STARS CANVAS                   */
+        /* ═══════════════════════════════════════ */
+        #stars-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* SHOOTING STARS                          */
+        /* ═══════════════════════════════════════ */
+        .shooting-star {
+            position: fixed;
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,253,245,0.8), transparent);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            animation: shoot 1.5s ease-out infinite;
+        }
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            left: 0; top: -1px;
+            width: 6px; height: 4px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255,253,245,0.6);
+        }
+        .shooting-star:nth-child(1) { top: 15%; left: 70%; animation-delay: 3s; animation-duration: 1.2s; transform: rotate(35deg); }
+        .shooting-star:nth-child(2) { top: 30%; left: 40%; animation-delay: 8s; animation-duration: 1.5s; transform: rotate(25deg); }
+        .shooting-star:nth-child(3) { top: 10%; left: 85%; animation-delay: 14s; animation-duration: 1s; transform: rotate(40deg); }
+        .shooting-star:nth-child(4) { top: 50%; left: 20%; animation-delay: 20s; animation-duration: 1.3s; transform: rotate(30deg); }
+
+        @keyframes shoot {
+            0% { opacity: 0; transform: translateX(0) rotate(inherit); }
+            5% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(-300px) rotate(inherit); }
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* NAVIGATION                              */
+        /* ═══════════════════════════════════════ */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+        nav.scrolled {
+            background: rgba(10,14,26,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212,168,67,0.15);
+            padding: 0.8rem 2rem;
+        }
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .nav-logo svg { width: 28px; height: 28px; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover { opacity: 1; color: var(--gold); }
+        .nav-links a:hover::after { width: 100%; }
+        .mobile-menu { display: none; cursor: pointer; background: none; border: none; }
+        .mobile-menu span { display: block; width: 24px; height: 2px; background: var(--cream); margin: 5px 0; transition: 0.3s; }
+
+        /* ═══════════════════════════════════════ */
+        /* HERO SECTION                            */
+        /* ═══════════════════════════════════════ */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('images/hero-night-sky.jpg') center/cover no-repeat;
+            filter: brightness(0.4);
+            transform: scale(1.1);
+            animation: heroZoom 20s ease-in-out infinite alternate;
+        }
+        @keyframes heroZoom {
+            0% { transform: scale(1.1); }
+            100% { transform: scale(1.0); }
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,
+                rgba(10,14,26,0.3) 0%,
+                rgba(10,14,26,0.1) 40%,
+                rgba(10,14,26,0.6) 80%,
+                rgba(10,14,26,1) 100%
+            );
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(212,168,67,0.1);
+            border: 1px solid rgba(212,168,67,0.3);
+            border-radius: 100px;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            animation: fadeUp 1s 0.3s both;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 1s 0.5s both;
+        }
+        .hero-title span {
+            display: block;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-style: italic;
+            color: rgba(245,240,232,0.7);
+            margin-bottom: 2.5rem;
+            animation: fadeUp 1s 0.7s both;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--night);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.4s;
+            animation: fadeUp 1s 0.9s both;
+            box-shadow: 0 4px 30px rgba(212,168,67,0.3);
+        }
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(212,168,67,0.5);
+        }
+        .hero-scroll {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: float 3s ease-in-out infinite;
+        }
+        .hero-scroll svg { width: 24px; height: 24px; stroke: var(--gold); opacity: 0.5; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* STATS BAR                               */
+        /* ═══════════════════════════════════════ */
+        .stats-bar {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            background: rgba(212,168,67,0.08);
+            border-top: 1px solid rgba(212,168,67,0.15);
+            border-bottom: 1px solid rgba(212,168,67,0.15);
+        }
+        .stat-item {
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            background: rgba(10,14,26,0.8);
+            backdrop-filter: blur(10px);
+        }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(245,240,232,0.5);
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* SECTIONS                                */
+        /* ═══════════════════════════════════════ */
+        section { position: relative; z-index: 2; }
+        .section-padding { padding: 8rem 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-label::before {
+            content: '';
+            width: 40px; height: 1px;
+            background: var(--gold);
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        .section-text {
+            font-size: 1.05rem;
+            color: rgba(245,240,232,0.65);
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* ABOUT / STORY                           */
+        /* ═══════════════════════════════════════ */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .about-image {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+        .about-image img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+        .about-image:hover img { transform: scale(1.05); }
+        .about-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(212,168,67,0.2);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+        .about-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--gold-light);
+            margin: 2rem 0;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--gold);
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* EXPERIENCE CARDS                        */
+        /* ═══════════════════════════════════════ */
+        .experience-section { background: linear-gradient(180deg, var(--night), var(--night-light), var(--night)); }
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .exp-card {
+            background: linear-gradient(145deg, rgba(26,34,53,0.8), rgba(17,24,39,0.6));
+            border: 1px solid rgba(212,168,67,0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .exp-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .exp-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212,168,67,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,67,0.05);
+        }
+        .exp-card:hover::before { opacity: 1; }
+        .exp-icon {
+            width: 60px; height: 60px;
+            background: rgba(212,168,67,0.08);
+            border: 1px solid rgba(212,168,67,0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .exp-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        .exp-card p {
+            font-size: 0.9rem;
+            color: rgba(245,240,232,0.55);
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* KEY OF THE SKY                          */
+        /* ═══════════════════════════════════════ */
+        .sky-key-section {
+            background: radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.05), transparent 70%);
+        }
+        .sky-key-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .sky-key-item {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(26,34,53,0.5);
+            border: 1px solid rgba(212,168,67,0.1);
+            border-radius: 16px;
+            transition: all 0.4s;
+            cursor: default;
+        }
+        .sky-key-item:hover {
+            border-color: rgba(212,168,67,0.4);
+            background: rgba(212,168,67,0.05);
+            transform: translateY(-5px);
+        }
+        .sky-key-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 0.75rem;
+        }
+        .sky-key-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .sky-key-desc {
+            font-size: 0.8rem;
+            color: rgba(245,240,232,0.45);
+            line-height: 1.5;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* CONSTELLATION SHOWCASE                  */
+        /* ═══════════════════════════════════════ */
+        .constellations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .constellation-card {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: rgba(26,34,53,0.4);
+            border: 1px solid rgba(212,168,67,0.08);
+            border-radius: 16px;
+            transition: all 0.4s;
+        }
+        .constellation-card:hover {
+            background: rgba(212,168,67,0.03);
+            border-color: rgba(212,168,67,0.2);
+        }
+        .constellation-symbol {
+            font-size: 2.5rem;
+            min-width: 60px;
+            text-align: center;
+            line-height: 1;
+            padding-top: 0.25rem;
+        }
+        .constellation-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold-light);
+        }
+        .constellation-card p {
+            font-size: 0.85rem;
+            color: rgba(245,240,232,0.5);
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* IMAGE GALLERY                           */
+        /* ═══════════════════════════════════════ */
+        .gallery-section { overflow: hidden; }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 280px);
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item:nth-child(1) { grid-column: span 2; }
+        .gallery-item:nth-child(4) { grid-column: span 2; }
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(10,14,26,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .gallery-item:hover::after { opacity: 1; }
+
+        /* ═══════════════════════════════════════ */
+        /* TESTIMONIALS                            */
+        /* ═══════════════════════════════════════ */
+        .testimonials-section {
+            background: linear-gradient(180deg, var(--night), var(--night-light), var(--night));
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .testimonial-card {
+            padding: 2.5rem;
+            background: rgba(26,34,53,0.5);
+            border: 1px solid rgba(212,168,67,0.08);
+            border-radius: 16px;
+        }
+        .testimonial-stars {
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+        }
+        .testimonial-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: rgba(245,240,232,0.75);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        .testimonial-author {
+            font-size: 0.8rem;
+            color: rgba(245,240,232,0.4);
+            letter-spacing: 1px;
+        }
+        .testimonial-author strong {
+            color: var(--cream);
+            font-weight: 500;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* PYRAMID FACT                            */
+        /* ═══════════════════════════════════════ */
+        .pyramid-section {
+            background: radial-gradient(ellipse at 50% 50%, rgba(212,168,67,0.04), transparent 70%);
+            text-align: center;
+        }
+        .pyramid-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .pyramid-content .big-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-style: italic;
+            line-height: 1.4;
+            color: var(--cream);
+            margin-bottom: 2rem;
+        }
+        .pyramid-content .big-quote span { color: var(--gold); }
+        .pyramid-fact {
+            font-size: 0.9rem;
+            color: rgba(245,240,232,0.5);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* BOOKING / CONTACT                       */
+        /* ═══════════════════════════════════════ */
+        .booking-section {
+            background: linear-gradient(180deg, var(--night), var(--night-mid));
+        }
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        .booking-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+        .booking-info h3:first-child { margin-top: 0; }
+        .booking-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(212,168,67,0.08);
+        }
+        .booking-detail-icon {
+            font-size: 1.3rem;
+            min-width: 36px;
+            text-align: center;
+        }
+        .booking-detail-text h4 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .booking-detail-text p {
+            font-size: 0.85rem;
+            color: rgba(245,240,232,0.5);
+        }
+        .booking-form {
+            background: rgba(26,34,53,0.5);
+            border: 1px solid rgba(212,168,67,0.1);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(245,240,232,0.5);
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(10,14,26,0.6);
+            border: 1px solid rgba(212,168,67,0.15);
+            border-radius: 10px;
+            color: var(--cream);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--gold);
+        }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .form-group select option { background: var(--night); }
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--night);
+            border: none;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .form-submit:hover {
+            box-shadow: 0 8px 30px rgba(212,168,67,0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* FOOTER                                  */
+        /* ═══════════════════════════════════════ */
+        footer {
+            position: relative;
+            z-index: 2;
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid rgba(212,168,67,0.1);
+            text-align: center;
+        }
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+        .footer-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: rgba(245,240,232,0.4);
+            margin-bottom: 2rem;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-links a {
+            color: rgba(245,240,232,0.5);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .footer-social a {
+            width: 44px; height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(212,168,67,0.2);
+            border-radius: 50%;
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        .footer-social a:hover {
+            background: var(--gold);
+            color: var(--night);
+            border-color: var(--gold);
+        }
+        .footer-copy {
+            font-size: 0.75rem;
+            color: rgba(245,240,232,0.25);
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* SCROLL ANIMATIONS                       */
+        /* ═══════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* PARALLAX IMAGE SECTIONS                 */
+        /* ═══════════════════════════════════════ */
+        .parallax-break {
+            position: relative;
+            z-index: 2;
+            height: 50vh;
+            min-height: 350px;
+            overflow: hidden;
+        }
+        .parallax-break img {
+            position: absolute;
+            inset: -10% 0;
+            width: 100%; height: 120%;
+            object-fit: cover;
+            filter: brightness(0.35);
+        }
+        .parallax-break .parallax-text {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        .parallax-text blockquote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-style: italic;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+        .parallax-text blockquote span { color: var(--gold-light); }
+
+        /* ═══════════════════════════════════════ */
+        /* GLOWING DIVIDER                         */
+        /* ═══════════════════════════════════════ */
+        .glow-divider {
+            position: relative;
+            z-index: 2;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0.2;
+            margin: 0 10%;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* RESPONSIVE                              */
+        /* ═══════════════════════════════════════ */
+        @media (max-width: 1024px) {
+            .experience-grid { grid-template-columns: repeat(2, 1fr); }
+            .sky-key-grid { grid-template-columns: repeat(3, 1fr); }
+            .constellations-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu { display: block; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .experience-grid { grid-template-columns: 1fr; }
+            .sky-key-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 200px);
+            }
+            .gallery-item:nth-child(1) { grid-column: span 2; }
+            .gallery-item:nth-child(4) { grid-column: span 1; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .booking-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .sky-key-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .gallery-item, .gallery-item:nth-child(1) { grid-column: span 1; height: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- STICKY BOOK NOW -->
+<a href="#book" class="sticky-book">Book Now ✦</a>
+
+<!-- FLOATING STARS CANVAS -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- SHOOTING STARS -->
+<div class="shooting-star"></div>
+<div class="shooting-star"></div>
+<div class="shooting-star"></div>
+<div class="shooting-star"></div>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+    <div class="nav-logo">
+        <svg viewBox="0 0 28 28" fill="none"><polygon points="14,2 16.5,10 25,10 18,15.5 20.5,24 14,19 7.5,24 10,15.5 3,10 11.5,10" fill="currentColor"/></svg>
+        Yousef Stargazing
+    </div>
+    <ul class="nav-links">
+        <li><a href="#about">Story</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#sky-key">Sky Key</a></li>
+        <li><a href="#constellations">Stars</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#book">Book Now</a></li>
+    </ul>
+    <button class="mobile-menu" onclick="document.querySelector('.nav-links').classList.toggle('show')">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,1 8.2,5 12.5,5 9,7.8 10.2,12 7,9.5 3.8,12 5,7.8 1.5,5 5.8,5" fill="currentColor"/></svg>
+            Wadi Rum, Jordan
+        </div>
+        <h1 class="hero-title">
+            Read the Sky<br>
+            <span>Like a Bedouin</span>
+        </h1>
+        <p class="hero-subtitle">
+            "The sky is a book. The ground is a book.<br>Our grandfathers could read both."
+        </p>
+        <a href="#book" class="hero-cta">
+            Book Your Night
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+    <div class="hero-scroll">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </div>
+</section>
+
+<!-- STATS REMOVED -->
+
+<!-- ABOUT -->
+<section id="about" class="section-padding">
+    <div class="container">
+        <div class="about-grid">
+            <div class="reveal">
+                <div class="section-label">The Story</div>
+                <h2 class="section-title">I Was Born Under These Stars</h2>
+                <p class="section-text">
+                    I'm Yousef, and I was born right here in Wadi Rum — the Valley of the Moon. My grandfathers navigated by the stars to survive. Now I share their wisdom with you.
+                </p>
+                <blockquote class="about-quote">
+                    "We come here to enjoy the stars. Our grandfathers used them. This was their GPS."
+                </blockquote>
+                <p class="section-text">
+                    I'll take you deep into the desert, far from any village light, and teach you the art of celestial navigation — the same techniques that saved lives for centuries. I'll show you how to find north by the stars, read animal tracks in the sand, and tell you the stories my grandfather told me.
+                </p>
+            </div>
+            <div class="about-image reveal">
+                <img src="images/stargazing-education.jpeg" alt="Yousef guiding tourists under the stars" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="experience-section section-padding">
+    <div class="container">
+        <div class="reveal" style="text-align:center; max-width:700px; margin:0 auto 1rem;">
+            <div class="section-label" style="justify-content:center;">
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+                The Experience
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+            </div>
+            <h2 class="section-title">One Night. A Lifetime of Wonder.</h2>
+            <p class="section-text" style="margin:0 auto;">Step into the desert darkness with me and discover why we learned the sky before we learned to write.</p>
+        </div>
+        <div class="experience-grid">
+            <div class="exp-card reveal">
+                <div class="exp-icon">🌟</div>
+                <h3>Celestial Navigation</h3>
+                <p>I'll teach you to find north using the Big Dipper and Cassiopeia — the same way my people navigated for centuries. No compass needed. Just the stars and your five fingers.</p>
+            </div>
+            <div class="exp-card reveal">
+                <div class="exp-icon">🔭</div>
+                <h3>Constellation Stories</h3>
+                <p>I'll tell you about the Three Sisters carrying their father's coffin, the archer aiming at the scorpion's heart, and the love story of Aldebaran chasing the Seven Sisters every night.</p>
+            </div>
+            <div class="exp-card reveal">
+                <div class="exp-icon">🏛️</div>
+                <h3>Pyramids & Orion</h3>
+                <p>I'll show you the incredible connection between Orion's Belt and the Great Pyramids of Giza — built to mirror the sky. Egypt is the mirror of heaven.</p>
+            </div>
+            <div class="exp-card reveal">
+                <div class="exp-icon">🐪</div>
+                <h3>Desert Tracking</h3>
+                <p>I'll teach you to read the ground like a Bedouin: wolf, fox, snake, scorpion, and camel tracks in the sand. The sky is half the book — the ground is the other half.</p>
+            </div>
+            <div class="exp-card reveal">
+                <div class="exp-icon">🪶</div>
+                <h3>Bedouin Survival</h3>
+                <p>I'll share real stories of wolf encounters, snake survival, and how my grandfathers lived in harmony with the desert — using nature's own tools to stay alive.</p>
+            </div>
+            <div class="exp-card reveal">
+                <div class="exp-icon">☕</div>
+                <h3>Desert Tea & Culture</h3>
+                <p>Sit with me under the stars with traditional Bedouin tea, surrounded by the silence of Wadi Rum. The same hospitality my people have offered for a thousand years.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PARALLAX BREAK -->
+<div class="parallax-break">
+    <img src="images/wadi-rum-milky-way.jpg" alt="Milky Way over Wadi Rum" loading="lazy">
+    <div class="parallax-text">
+        <blockquote>
+            "What you're seeing right now — it's not real. <span>Sirius is 8.6 light-years away.</span> You're looking at the past. Every star is a time machine."
+        </blockquote>
+    </div>
+</div>
+
+<!-- KEY OF THE SKY -->
+<section id="sky-key" class="sky-key-section section-padding">
+    <div class="container">
+        <div class="reveal" style="text-align:center; max-width:700px; margin:0 auto;">
+            <div class="section-label" style="justify-content:center;">
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+                Ancient Wisdom
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+            </div>
+            <h2 class="section-title">The Key of the Sky — In Your Hand</h2>
+            <p class="section-text" style="margin:0 auto 1rem;">Your hand has five fingers. That's all you need to navigate the entire night sky. I'll teach you this ancient Bedouin mnemonic that has guided desert travelers for generations.</p>
+        </div>
+        <div class="sky-key-grid">
+            <div class="sky-key-item reveal">
+                <div class="sky-key-number">1</div>
+                <div class="sky-key-name">North Star</div>
+                <div class="sky-key-desc">The one fixed point. It never moves. Your anchor in the sky.</div>
+            </div>
+            <div class="sky-key-item reveal">
+                <div class="sky-key-number">2</div>
+                <div class="sky-key-name">The Defenders</div>
+                <div class="sky-key-desc">Two guardian stars that protect the North Star from the sisters' revenge.</div>
+            </div>
+            <div class="sky-key-item reveal">
+                <div class="sky-key-number">3</div>
+                <div class="sky-key-name">Three Sisters</div>
+                <div class="sky-key-desc">Carrying their father's coffin, circling forever, seeking revenge.</div>
+            </div>
+            <div class="sky-key-item reveal">
+                <div class="sky-key-number">4</div>
+                <div class="sky-key-name">The Coffin</div>
+                <div class="sky-key-desc">The body of the Big Dipper. The father who was killed by the North Star.</div>
+            </div>
+            <div class="sky-key-item reveal">
+                <div class="sky-key-number">5</div>
+                <div class="sky-key-name">Cassiopeia</div>
+                <div class="sky-key-desc">The W in the sky. Your backup when the Big Dipper hides below the mountains.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- CONSTELLATIONS -->
+<section id="constellations" class="section-padding">
+    <div class="container">
+        <div class="reveal">
+            <div class="section-label">The Stars Above</div>
+            <h2 class="section-title">Constellations You'll Discover</h2>
+            <p class="section-text">Every dot in the sky has a name, a story, and a purpose. Here are some of the stars and constellations I'll show you.</p>
+        </div>
+        <div class="constellations-grid">
+            <div class="constellation-card reveal">
+                <div class="constellation-symbol">♈</div>
+                <div>
+                    <h4>Orion — The Hunter</h4>
+                    <p>Three belt stars that mirror the Pyramids of Giza. His dog Canis Major carries Sirius — the brightest star in the night sky. Below him, a rabbit waits to be caught.</p>
+                </div>
+            </div>
+            <div class="constellation-card reveal">
+                <div class="constellation-symbol">✦</div>
+                <div>
+                    <h4>Pleiades — The Seven Sisters</h4>
+                    <p>A tight cluster followed forever by Aldebaran, "the follower," who brings his sheep as dowry, hoping to marry one of them. They run. He follows. Every single night.</p>
+                </div>
+            </div>
+            <div class="constellation-card reveal">
+                <div class="constellation-symbol">♏</div>
+                <div>
+                    <h4>Scorpius — The Scorpion</h4>
+                    <p>Its bright red heart, Antares, glows in the southern sky. Next to it stands Sagittarius — the half-man, half-horse archer — aiming his bow at the scorpion's heart.</p>
+                </div>
+            </div>
+            <div class="constellation-card reveal">
+                <div class="constellation-symbol">△</div>
+                <div>
+                    <h4>The Summer Triangle</h4>
+                    <p>Deneb ("tail" in Arabic), Altair ("the bird"), and Vega form a massive triangle. When it appears before sunrise, summer is on its way.</p>
+                </div>
+            </div>
+            <div class="constellation-card reveal">
+                <div class="constellation-symbol">◇</div>
+                <div>
+                    <h4>Pegasus — The Great Horse</h4>
+                    <p>A flying horse made of stars — head, neck, body, and legs spread across the autumn sky. One of the largest constellations visible from Wadi Rum.</p>
+                </div>
+            </div>
+            <div class="constellation-card reveal">
+                <div class="constellation-symbol">☽</div>
+                <div>
+                    <h4>Canopus — The Falcon Star</h4>
+                    <p>Fourth brightest star, appearing in late August. When Canopus rises, birds migrate through Jordan — and the Bedouin falcon hunting season begins.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PARALLAX BREAK 2 -->
+<div class="parallax-break">
+    <img src="images/desert-stars.jpg" alt="Stars over the desert" loading="lazy">
+    <div class="parallax-text">
+        <blockquote>
+            "<span>Winter = W</span> shape, use Cassiopeia.<br>
+            <span>Summer = S</span>even stars, use the Big Dipper.<br>
+            That's how you remember."
+        </blockquote>
+    </div>
+</div>
+
+<!-- PYRAMID SECTION -->
+<section class="pyramid-section section-padding">
+    <div class="container">
+        <div class="pyramid-content reveal">
+            <div class="section-label" style="justify-content:center;">
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+                Ancient Connection
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+            </div>
+            <p class="big-quote">
+                "Orion's three belt stars are not perfectly in a line. One is slightly offset. The three Great Pyramids of Giza? <span>Same layout.</span> The Egyptians built the pyramids to mirror the sky."
+            </p>
+            <p class="pyramid-fact">
+                The ancient Egyptians aligned the Great Pyramids with Orion's Belt, built the Red Pyramid to match the red star Betelgeuse, and saw the Milky Way as the Nile River. They wrote: "Egypt is the mirror of the sky." — 41% of all star names in modern astronomy are Arabic in origin.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- GALLERY -->
+<section id="gallery" class="gallery-section section-padding">
+    <div class="container">
+        <div class="reveal" style="text-align:center;">
+            <div class="section-label" style="justify-content:center;">
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+                Gallery
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+            </div>
+            <h2 class="section-title">Wadi Rum After Dark</h2>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item reveal"><img src="images/stargazing-arch.png" alt="Milky Way through Wadi Rum rock arch" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="images/bedouin-camp-night.jpg" alt="Bedouin camp at night" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="images/night-desert-wide.jpg" alt="Wide desert night" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="images/stargazing-group.jpg" alt="Stargazing group" loading="lazy"></div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section section-padding">
+    <div class="container">
+        <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+            <div class="section-label" style="justify-content:center;">
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+                Voices
+                <span style="width:40px;height:1px;background:var(--gold);display:inline-block;"></span>
+            </div>
+            <h2 class="section-title">What Travelers Say</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">★ ★ ★ ★ ★</div>
+                <p class="testimonial-text">"I've traveled to 40 countries and this was the single most magical night of my life. Yousef doesn't just show you stars — he makes you feel connected to something ancient."</p>
+                <p class="testimonial-author"><strong>Sarah M.</strong> — London, UK</p>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">★ ★ ★ ★ ★</div>
+                <p class="testimonial-text">"The way he tells the story of the Three Sisters... I got goosebumps. My kids still talk about the Key of the Sky. We left with tears in our eyes."</p>
+                <p class="testimonial-author"><strong>Marcus & Family</strong> — Berlin, Germany</p>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">★ ★ ★ ★ ★</div>
+                <p class="testimonial-text">"I'm an astronomer and even I learned things I never knew. The Bedouin knowledge of the sky is profound. Yousef is the real deal — a living library."</p>
+                <p class="testimonial-author"><strong>Dr. James K.</strong> — Sydney, Australia</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- BOOKING -->
+<section id="book" class="booking-section section-padding">
+    <div class="container">
+        <div class="booking-grid">
+            <div class="reveal">
+                <div class="section-label">Book Your Night</div>
+                <h2 class="section-title">Step Into the Desert Sky</h2>
+                <p class="section-text" style="margin-bottom:2rem;">Join me for an unforgettable evening under the clearest skies in the Middle East. I can come to your camp or drive you to a remote desert location — completely flexible. Just 15 JOD per person for a night you'll never forget.</p>
+
+                <div style="background:linear-gradient(135deg,rgba(212,168,67,0.1),rgba(212,168,67,0.03));border:1px solid rgba(212,168,67,0.25);border-radius:16px;padding:1.5rem 2rem;margin-bottom:2rem;text-align:center;">
+                    <div style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:var(--gold);line-height:1;">15 JOD</div>
+                    <div style="font-size:0.85rem;color:rgba(245,240,232,0.6);margin-top:0.25rem;">per person</div>
+                </div>
+
+                <h3>Flexible Options</h3>
+                <div class="booking-detail">
+                    <div class="booking-detail-icon">🏕️</div>
+                    <div class="booking-detail-text">
+                        <h4>I Come to You</h4>
+                        <p>Already at a camp? I'll come directly to your location — no need to go anywhere</p>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <div class="booking-detail-icon">🚙</div>
+                    <div class="booking-detail-text">
+                        <h4>Desert Drive-Out</h4>
+                        <p>Want the darkest skies? I'll drive you to a remote spot far from any lights for the full experience</p>
+                    </div>
+                </div>
+
+                <h3>What's Included</h3>
+                <div class="booking-detail">
+                    <div class="booking-detail-icon">🌙</div>
+                    <div class="booking-detail-text">
+                        <h4>2-3 Hour Stargazing Session</h4>
+                        <p>Full guided experience with navigation, stories, and constellation identification</p>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <div class="booking-detail-icon">☕</div>
+                    <div class="booking-detail-text">
+                        <h4>Traditional Bedouin Tea</h4>
+                        <p>Served under the stars in the silence of the desert</p>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <div class="booking-detail-icon">🐾</div>
+                    <div class="booking-detail-text">
+                        <h4>Desert Tracking Lesson</h4>
+                        <p>Learn to read animal tracks — wolf, fox, snake, scorpion, and more</p>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <div class="booking-detail-icon">📍</div>
+                    <div class="booking-detail-text">
+                        <h4>Wadi Rum Protected Area</h4>
+                        <p>Pickup from Wadi Rum Village, your camp, or any location in the area</p>
+                    </div>
+                </div>
+            </div>
+            <div class="booking-form reveal">
+                <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:2rem;text-align:center;">Reserve Your Stars</h3>
+                <form onsubmit="event.preventDefault(); alert('Thank you! Yousef will contact you soon to confirm your booking. See you under the stars! ⭐'); this.reset();">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp Number</label>
+                        <input type="tel" placeholder="+962 ..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Date</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Group Size</label>
+                        <select required>
+                            <option value="">Select group size</option>
+                            <option>1-2 people</option>
+                            <option>3-5 people</option>
+                            <option>6-10 people</option>
+                            <option>10+ people</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message (Optional)</label>
+                        <textarea placeholder="Any special requests or questions..."></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Book My Night Under the Stars</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">✦ Yousef Stargazing</div>
+    <p class="footer-tagline">"The sky is a book. Our grandfathers could read it."</p>
+    <div class="footer-links">
+        <a href="#about">Story</a>
+        <a href="#experience">Experience</a>
+        <a href="#sky-key">Sky Key</a>
+        <a href="#constellations">Stars</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#book">Book Now</a>
+    </div>
+    <div class="footer-social">
+        <a href="#" title="Instagram">📷</a>
+        <a href="#" title="WhatsApp">💬</a>
+        <a href="#" title="TripAdvisor">🌍</a>
+        <a href="#" title="Facebook">📘</a>
+    </div>
+    <p class="footer-copy">© 2026 Yousef Stargazing · Wadi Rum, Jordan · All rights reserved</p>
+</footer>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCRIPTS                                 -->
+<!-- ═══════════════════════════════════════ -->
+<script>
+// ─── Floating Stars Canvas ───
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+function createStars() {
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 3000);
+    for (let i = 0; i < count; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.5 + 0.3,
+            alpha: Math.random() * 0.8 + 0.2,
+            alphaSpeed: Math.random() * 0.01 + 0.003,
+            alphaDir: Math.random() > 0.5 ? 1 : -1,
+        });
+    }
+}
+
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+        s.alpha += s.alphaSpeed * s.alphaDir;
+        if (s.alpha >= 1) { s.alpha = 1; s.alphaDir = -1; }
+        if (s.alpha <= 0.1) { s.alpha = 0.1; s.alphaDir = 1; }
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 253, 245, ${s.alpha})`;
+        ctx.fill();
+
+        // Glow for bigger stars
+        if (s.radius > 1) {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.radius * 3, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 253, 245, ${s.alpha * 0.1})`;
+            ctx.fill();
+        }
+    });
+    requestAnimationFrame(drawStars);
+}
+
+window.addEventListener('resize', () => { resizeCanvas(); createStars(); });
+resizeCanvas();
+createStars();
+drawStars();
+
+// ─── Nav scroll effect ───
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// ─── Scroll reveal ───
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ─── Smooth scroll for nav links ───
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+
+// ─── Parallax on scroll ───
+window.addEventListener('scroll', () => {
+    document.querySelectorAll('.parallax-break img').forEach(img => {
+        const rect = img.parentElement.getBoundingClientRect();
+        const speed = 0.3;
+        img.style.transform = `translateY(${rect.top * speed}px)`;
+    });
+});
+</script>
+
+</body>
+</html>
