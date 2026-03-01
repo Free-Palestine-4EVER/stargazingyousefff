@@ -1274,7 +1274,7 @@
             </div>
             <div class="booking-form reveal">
                 <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:2rem;text-align:center;">Reserve Your Stars</h3>
-                <form onsubmit="event.preventDefault(); alert('Thank you! Yousef will contact you soon to confirm your booking. See you under the stars! ⭐'); this.reset();">
+                <form id="booking-form" onsubmit="submitBooking(event)">
                     <div class="form-group">
                         <label>Your Name</label>
                         <input type="text" placeholder="Enter your name" required>
@@ -1337,6 +1337,70 @@
 <!-- SCRIPTS                                 -->
 <!-- ═══════════════════════════════════════ -->
 <script>
+// ─── Booking Form (Resend) ───
+async function submitBooking(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('.form-submit');
+    const origText = btn.textContent;
+    btn.textContent = 'SENDING...';
+    btn.disabled = true;
+
+    const name = form.querySelector('input[type="text"]').value;
+    const email = form.querySelector('input[type="email"]').value;
+    const phone = form.querySelector('input[type="tel"]').value;
+    const date = form.querySelector('input[type="date"]').value;
+    const group = form.querySelector('select').value;
+    const message = form.querySelector('textarea').value;
+
+    try {
+        const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer re_Z4R55Kei_7tmwsPWEB1iSsteRn3MHDsnd',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: 'Yousef Stargazing <onboarding@resend.dev>',
+                to: 'yousefwadirum@gmail.com',
+                subject: '⭐ New Stargazing Booking — ' + name,
+                html: `
+                    <h2>New Booking Request</h2>
+                    <table style="border-collapse:collapse;width:100%;max-width:500px;">
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Name</td><td style="padding:8px;border-bottom:1px solid #eee;">${name}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Email</td><td style="padding:8px;border-bottom:1px solid #eee;">${email}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">WhatsApp</td><td style="padding:8px;border-bottom:1px solid #eee;">${phone}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Date</td><td style="padding:8px;border-bottom:1px solid #eee;">${date}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Group Size</td><td style="padding:8px;border-bottom:1px solid #eee;">${group}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Message</td><td style="padding:8px;border-bottom:1px solid #eee;">${message || 'No message'}</td></tr>
+                    </table>
+                `
+            })
+        });
+
+        if (res.ok) {
+            btn.textContent = '✓ BOOKING SENT!';
+            btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+            form.reset();
+            setTimeout(() => {
+                btn.textContent = origText;
+                btn.style.background = '';
+                btn.disabled = false;
+            }, 4000);
+        } else {
+            throw new Error('Failed');
+        }
+    } catch (err) {
+        btn.textContent = '✗ ERROR — TRY AGAIN';
+        btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        btn.disabled = false;
+        setTimeout(() => {
+            btn.textContent = origText;
+            btn.style.background = '';
+        }, 3000);
+    }
+}
+
 // ─── Floating Stars Canvas ───
 const canvas = document.getElementById('stars-canvas');
 const ctx = canvas.getContext('2d');
