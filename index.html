@@ -1341,7 +1341,7 @@
 <!-- SCRIPTS                                 -->
 <!-- ═══════════════════════════════════════ -->
 <script>
-// ─── Booking Form (Resend) ───
+// ─── Booking Form (FormSubmit) ───
 async function submitBooking(e) {
     e.preventDefault();
     const form = e.target;
@@ -1350,36 +1350,21 @@ async function submitBooking(e) {
     btn.textContent = 'SENDING...';
     btn.disabled = true;
 
-    const name = form.querySelector('input[type="text"]').value;
-    const email = form.querySelector('input[type="email"]').value;
-    const phone = form.querySelector('input[type="tel"]').value;
-    const date = form.querySelector('input[type="date"]').value;
-    const group = form.querySelector('select').value;
-    const message = form.querySelector('textarea').value;
+    const formData = new FormData();
+    formData.append('name', form.querySelector('input[type="text"]').value);
+    formData.append('email', form.querySelector('input[type="email"]').value);
+    formData.append('phone', form.querySelector('input[type="tel"]').value);
+    formData.append('date', form.querySelector('input[type="date"]').value);
+    formData.append('group', form.querySelector('select').value);
+    formData.append('message', form.querySelector('textarea').value || 'No message');
+    formData.append('_subject', '⭐ New Stargazing Booking');
+    formData.append('_template', 'table');
+    formData.append('_captcha', 'false');
 
     try {
-        const res = await fetch('https://api.resend.com/emails', {
+        const res = await fetch('https://formsubmit.co/ajax/yousefwadirum@gmail.com', {
             method: 'POST',
-            headers: {
-                'Authorization': 'Bearer re_Z4R55Kei_7tmwsPWEB1iSsteRn3MHDsnd',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                from: 'Yousef Stargazing <onboarding@resend.dev>',
-                to: 'yousefwadirum@gmail.com',
-                subject: '⭐ New Stargazing Booking — ' + name,
-                html: `
-                    <h2>New Booking Request</h2>
-                    <table style="border-collapse:collapse;width:100%;max-width:500px;">
-                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Name</td><td style="padding:8px;border-bottom:1px solid #eee;">${name}</td></tr>
-                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Email</td><td style="padding:8px;border-bottom:1px solid #eee;">${email}</td></tr>
-                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">WhatsApp</td><td style="padding:8px;border-bottom:1px solid #eee;">${phone}</td></tr>
-                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Date</td><td style="padding:8px;border-bottom:1px solid #eee;">${date}</td></tr>
-                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Group Size</td><td style="padding:8px;border-bottom:1px solid #eee;">${group}</td></tr>
-                        <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Message</td><td style="padding:8px;border-bottom:1px solid #eee;">${message || 'No message'}</td></tr>
-                    </table>
-                `
-            })
+            body: formData
         });
 
         if (res.ok) {
